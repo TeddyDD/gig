@@ -1,0 +1,30 @@
+linters:
+  # keep default linters enabled
+  diableAll: false
+  enable:
+    - asciicheck
+    - bodyclose
+    - depguard
+    - dogsled
+    - dupl
+    - gochecknoinits
+    - goconst
+    - gocritic
+    - godot
+    - godox
+    - gofmt
+    - goimports
+    - gomodguard
+    - goprintffuncname
+    - govet
+    - misspell
+    - nolintlint
+    - prealloc
+    - revive
+    - rowserrcheck
+    - staticcheck
+    - stylecheck
+    - unconvert
+    - unparam
+    - whitespace
+    - wsl

@@ -25,9 +25,6 @@ jobs:
       run: |
         go get -v -t -d ./...
 
-    - name: Install Dependencies
-      run: go get -v golang.org/x/lint/golint
-
     - name: Build
       run: go build -v ./...
 
@@ -35,7 +32,6 @@ jobs:
       run: |
           go test --coverprofile=coverage.coverprofile --covermode=atomic .
           go test -race .
-          golint -set_exit_status .
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1.1.1
