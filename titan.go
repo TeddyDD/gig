@@ -74,10 +74,32 @@ func Titan(sizeLimit int) MiddlewareFunc {
 	}
 }
 
+// titanURLtoGemini strips Titan parameters and changes scheme to gemini.
+func titanURLtoGemini(url *url.URL) error {
+	fragments := strings.Split(url.Path, ";")
+	if len(fragments) <= 0 {
+		return errors.New("failed to create redirect URL")
+	}
+	url.Scheme = "gemini"
+	url.Path = fragments[0]
+	return nil
+}
+
+// TitanRedirect is utility that redirects client to matching Gemini resource
+// after successful upload. It changes scheme to gemini and removes Titan
+// parameters from URL path.
+func TitanRedirect(c Context) {
+	url := c.URL()
+	if err := titanURLtoGemini(url); err != nil {
+		c.NoContent(StatusPermanentFailure, err.Error())
+	}
+	c.NoContent(StatusRedirectTemporary, url.String())
+}
+
 // TitanReadFull is utility wrapper that allocates new buffer and reads
-// Titan request body into it.
+// Titan request's content into it.
 //
-// To store file on disk directly io.CopyN is preferable.
+// To store large file on disk directly methods like io.CopyN are preferable.
 func TitanReadFull(c Context) ([]byte, error) {
 	size := c.Get("size").(int)
 	buffer := make([]byte, size)
